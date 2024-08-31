@@ -1,0 +1,57 @@
+<br>
+<br>
+<br>
+<br>
+<div style="display: flex; align-items: center;">
+    <img src="{{ asset('/back/images/logos/logo2.png') }}" style="width: 70px; height: 50px; margin-right: 20px;" alt="Description de votre image">
+    <h1 style="font-weight: bold;">
+        <span style="color: #164D73;">Nutri</span>
+        <span style="color: #778A17;">Net</span>
+    </h1>
+</div>
+
+
+
+{% block title %} <h1>LISTES PRODUITS</h1>{% endblock %}
+
+<br>
+<br>
+{% block body %}
+
+<table class="table" id="myTable">
+        <thead>
+            
+            <tr style="background-color: #f2f2f2;">
+                <!-- En-têtes des colonnes -->
+                <th>Ref</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Image</th>
+                <th>Promotion</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Prix promo</th>
+                <th>Categories</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produit in produits %}
+            <tr>
+                <!-- Contenu des colonnes -->
+                <td>{{ produit.refProd }}</td>
+                <td>{{ produit.nomProd }}</td>
+                <td>{{ produit.quantite }}</td>
+                <td>{{ produit.description }}</td>
+                <td>{{ produit.prix }} DT</td>
+                <td><img src="{{ asset('images/' ~ produit.image)}}" style="max-width: 110px; max-height: 80px;" alt=""></td>
+                <td>{{ produit.enPromo ? 'Yes' : 'No' }}</td>
+                <td>{{ produit.dateDebutPromo ? produit.dateDebutPromo|date('Y-m-d') : 'N/A' }}</td>
+                <td>{{ produit.dateFinPromo ? produit.dateFinPromo|date('Y-m-d') : 'N/A' }}</td>
+                <td>{{ produit.prixApresPromo }} %</td>
+                <td>{{ produit.Categories.getNomCat() }}</td>
+             </tr>
+            {% endfor %}
+{% endblock %}

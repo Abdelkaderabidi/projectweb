@@ -1,0 +1,130 @@
+{% extends 'front.html.twig' %}
+
+{% block title %}
+    Produits de la catégorie {{ categorie.nomCat }}
+{% endblock %}
+
+{% block body %}
+<head>
+    <style>
+        /* Your CSS styles */
+        .product-card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            border-radius: 10px;
+            overflow: hidden;
+            max-width: 250px; /* Reduce the width of the card */
+            margin: auto; /* Center the card */
+            height: 350px; /* Set a fixed height for the card */
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 150px; /* Set a smaller fixed height for the images */
+            object-fit: cover; /* Ensure the image covers the area without distortion */
+            display: block;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .product-details {
+            padding: 10px; /* Reduce padding to fit smaller cards */
+        }
+
+        .product-details h4 {
+            font-size: 14px; /* Slightly smaller font size */
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .product-details p {
+            font-size: 12px; /* Smaller font size */
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            font-size: 14px; /* Slightly smaller font size */
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 8px;
+        }
+
+        .promo-message {
+            background-color: #ffc107;
+            color: #333;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 8px;
+            font-size: 12px; /* Smaller font size */
+        }
+
+        .promo-details {
+            margin-top: 8px;
+        }
+
+        .btn-buy {
+            background-color: #ffc107;
+            color: #333;
+            border: none;
+            padding: 5px 10px; /* Reduce padding for a smaller button */
+            border-radius: 20px;
+            transition: background-color 0.3s;
+            font-weight: bold;
+            font-size: 12px; /* Smaller font size */
+        }
+
+        .btn-buy:hover {
+            background-color: #ffcd1a;
+        }
+    </style>
+</head>
+<div class="container mt-5">
+    <h1 class="fashion_taital text-white">Produits de la catégorie {{ categorie.nomCat }}</h1>
+
+    {% if produits is empty %}
+        <div class="alert alert-info" role="alert">
+            Aucun produit disponible dans cette catégorie pour le moment.
+        </div>
+    {% else %}
+        <div class="row">
+            {% for produit in produits %}
+                <div class="col-md-4 d-flex justify-content-center mb-4"> <!-- Center cards within columns -->
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="{{ asset('images/' ~ produit.image) }}" alt="{{ produit.nomProd }}">
+                        </div>
+                        <div class="product-details text-center">
+                            <h4>{{ produit.nomProd }}</h4>
+                            <p class="product-price">
+                                {% if produit.enPromo %}
+                                    <del>{{ produit.prix }} DT</del> 
+                                    <span>{{ produit.prix - (produit.prix * (produit.prixApresPromo / 100)) }} DT</span>
+                                {% else %}
+                                    {{ produit.prix }} DT
+                                {% endif %}
+                            </p>
+                            <p>{{ produit.description }}</p>
+                            <p>Quantité disponible: {{ produit.quantite }}</p>
+                            {% if produit.enPromo %}
+                                <div class="promo-message">En promotion! {{ produit.prixApresPromo }} %</div>
+                                <div class="promo-details">
+                                    <p><strong>Date de début de promotion:</strong> {{ produit.dateDebutPromo|date('Y-m-d') }}</p>
+                                    <p><strong>Date de fin de promotion:</strong> {{ produit.dateFinPromo|date('Y-m-d') }}</p>
+                                </div>
+                            {% endif %}
+                            <a href="#" class="btn btn-buy"><i class="fa fa-shopping-bag me-2"></i> Add to cart</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

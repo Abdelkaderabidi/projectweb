@@ -1,0 +1,52 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}New Categorie{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+        <br>
+        <br>
+        <br>
+            <div class="card" id="animated-card">
+                <div class="text-center">
+                     <h1 class="fashion_taital text-center" style="padding-top: 10px; padding-bottom: 10px;">
+                     <span style="color: #164D73;">Modifier Categories</span>
+                    </h1>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'}}) }}
+                    <div class="form-group mb-3">
+                        {{ form_label(form.nomCat, 'Nom de la catégorie', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.nomCat, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom de la catégorie'}}) }}
+                        {{ form_errors(form.nomCat) }}
+                    </div>
+
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary" style="background-color: #778A17;">Enregistrer</button>
+                        <a href="{{ path('app_admin_cat_index') }}" class="btn btn-secondary" style="background-color: #778A17;">Retour à la liste</a>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes slideInRight {
+        0% {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    #animated-card {
+        animation: slideInRight 0.5s forwards;
+    }
+</style>
+{% endblock %}

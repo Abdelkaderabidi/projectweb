@@ -1,0 +1,26 @@
+{% extends 'front.html.twig' %}
+
+{% block body %}
+
+<!-- Nouvelle section -->
+<div class="nouvelle_section py-5">
+    <div class="container">
+        <h1 class="nouvelle_taital text-white text-center mb-5">Categories</h1>
+        <div class="row justify-content-center">
+            {% for categorie in categories %}
+                <div class="col-md-4 mb-4">
+                    <a href="{{ path('app_admin_prod_by_category', {'idCat': categorie.idCat}) }}">
+                        <div class="card border-0 bg-transparent h-100">
+                            <div class="card-body text-center py-4">
+                                <h5 class="card-title text-primary">{{ categorie.nomCat }}</h5>
+                                <p class="card-text mb-0">Explorez les produits</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

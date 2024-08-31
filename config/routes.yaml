@@ -1,0 +1,7 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+app_admin_prod_home:
+    path: /admin/prod/client/home
+    controller: App\Controller\AdminProdController::home
+

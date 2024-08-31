@@ -1,0 +1,148 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Ajouter un nouveau produit{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+        <br>
+        <br>
+        <br>
+            <div class="card" id="animated-card">
+            <h1 class="fashion_taital text-center" style="padding-top: 10px; padding-bottom: 10px;">
+                     <span style="color: #164D73;">Ajouter Produit</span>
+                    </h1>
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'}}) }}
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        {{ form_label(form.nomProd, 'Nom du produit', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.nomProd, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom du produit'}}) }}
+                        {{ form_errors(form.nomProd) }}
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        {{ form_label(form.quantite, 'Quantité', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.quantite, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la quantité disponible'}}) }}
+                        {{ form_errors(form.quantite) }}
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Entrez une description'}}) }}
+                        {{ form_errors(form.description) }}
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        {{ form_label(form.prix, 'Prix', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">DT</span>
+                            </div>
+                            {{ form_widget(form.prix, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le prix'}}) }}
+                        </div>
+                        {{ form_errors(form.prix) }}
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        {{ form_label(form.image, 'Image', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        <div class="custom-file">
+                            {{ form_widget(form.image, {'attr': {'class': 'custom-file-input'}}) }}
+                        </div>
+                        {{ form_errors(form.image) }}
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        {{ form_label(form.Categories, 'Catégorie', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.Categories, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.Categories) }}
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: 20px;">
+                       <div class="form-check">
+                          {{ form_widget(form.enPromo, {'attr': {'class': 'form-check-input'}}) }}
+                          {{ form_label(form.enPromo, 'En Promotion', {'label_attr': {'class': 'form-check-label font-weight-bold'}}) }}
+                         </div>
+                         {{ form_errors(form.enPromo) }}
+                    </div>
+  <div class="form-group" style="margin-bottom: 20px;">
+                        {{ form_label(form.dateDebutPromo, 'Date de début de Promotion', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.dateDebutPromo, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.dateDebutPromo) }}
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        {{ form_label(form.dateFinPromo, 'Date de fin de Promotion', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.dateFinPromo, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.dateFinPromo) }}
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                      {{ form_label(form.prixApresPromo, 'Prix après promotion', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                    <div class="input-group">
+                      {{ form_widget(form.prixApresPromo, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le prix après la promotion'}}) }}
+                    <div class="input-group-append">
+                     <span class="input-group-text">%</span>
+                     </div>
+                     </div>
+                    {{ form_errors(form.prixApresPromo) }}
+                     </div>
+
+
+
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary" style="background-color: #778A17;">Ajouter</button>
+                        <a href="{{ path('app_admin_prod_index') }}" class="btn btn-secondary" style="background-color: #778A17;">Retour à la liste</a>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes slideInRight {
+        0% {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    #animated-card {
+        animation: slideInRight 0.5s forwards;
+    }
+</style>
+
+<script>
+// JavaScript pour gérer l'état des champs de date de début et de fin de promotion
+document.addEventListener("DOMContentLoaded", function() {
+    // Sélection de la case à cocher "En Promotion", des champs de date et du champ prixApresPromo
+    var enPromoCheckbox = document.getElementById("{{ form.enPromo.vars.id }}");
+    var dateDebutPromoField = document.getElementById("{{ form.dateDebutPromo.vars.id }}");
+    var dateFinPromoField = document.getElementById("{{ form.dateFinPromo.vars.id }}");
+    var prixApresPromoField = document.getElementById("{{ form.prixApresPromo.vars.id }}");
+
+    // Fonction pour activer ou désactiver les champs de date et le champ prixApresPromo en fonction de l'état de la case à cocher
+    function toggleFields() {
+        if (enPromoCheckbox.checked) {
+            dateDebutPromoField.removeAttribute("disabled");
+            dateFinPromoField.removeAttribute("disabled");
+            prixApresPromoField.removeAttribute("disabled");
+        } else {
+            dateDebutPromoField.setAttribute("disabled", "disabled");
+            dateFinPromoField.setAttribute("disabled", "disabled");
+            prixApresPromoField.setAttribute("disabled", "disabled");
+        }
+    }
+
+    // Appel de la fonction au chargement de la page pour initialiser l'état des champs
+    toggleFields();
+
+    // Écouteur d'événement pour la case à cocher "En Promotion"
+    enPromoCheckbox.addEventListener("change", toggleFields);
+});
+</script>
+{% endblock %}
