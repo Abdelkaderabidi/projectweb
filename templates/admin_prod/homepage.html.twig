@@ -1,0 +1,56 @@
+{% extends 'front.html.twig' %}
+
+{% block body %}
+
+<style>
+    .btn-outline-primary {
+        color: #778A17;
+        border-color: #778A17;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #778A17;
+        color: #fff;
+    }
+
+    .btn-primary-custom {
+        background-color: #FFD700; /* Couleur jaune */
+        border-color: #FFD700; /* Couleur jaune */
+        color: #000; /* Texte noir */
+        font-weight: bold;
+    }
+
+    .btn-primary-custom:hover {
+        background-color: #FFC107; /* Couleur jaune foncé */
+        border-color: #FFC107; /* Couleur jaune foncé */
+        color: #fff; /* Texte blanc */
+    }
+
+</style>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<!-- Ajout du texte de bienvenue -->
+<div class="welcome-text text-center">
+    <h1 style="font-weight: bold; color: white; font-size: 40px;">Bienvenue dans notre magasin en ligne !</h1>
+</div>
+<br>
+<br>
+<br>
+<br>
+<!-- Bouton -->
+<div class="button-container text-center">
+    <a href="{{ path('app_client_prod_index') }}" class="btn btn-primary btn-primary-custom" type="button">Explorer Notre Boutique</a>
+</div>
+<br>
+<br>
+<br>
+<br>
+<!-- Contenu existant -->
+
+{% endblock %}

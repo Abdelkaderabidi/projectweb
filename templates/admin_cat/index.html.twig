@@ -1,0 +1,108 @@
+{% extends 'back.html.twig' %}
+
+{% block body %}
+<style>
+    .center-block {
+        text-align: center;
+    }
+    
+    .table th:nth-child(4), .table td:nth-child(4) {
+        width: 20% !important; /* Ajustez la largeur de la colonne Description */
+    }
+    
+    .table th:last-child, .table td:last-child {
+        width: 25% !important; /* Définir la largeur de la dernière colonne (Actions) */
+    }
+    
+    /* Couleur de bouton personnalisée */
+    .btn-primary {
+        background-color: #778A17 !important;
+        border-color: #778A17 !important;
+    }
+    
+    .btn-primary:hover {
+        background-color: #6c7914 !important;
+        border-color: #6c7914 !important;
+    }
+
+    /* Style pour le formulaire de tri */
+    #searchForm {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px; /* Ajoute une marge en bas pour l'espace */
+    }
+
+    .form-check-label {
+        margin-right: 10px; /* Ajoute une marge entre le bouton radio et son libellé */
+    }
+</style>
+   
+<div class="center-block">
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <!-- Formulaire de recherche -->
+    <form id="searchForm" method="POST" action="{{ path('app_admin_cat_index') }}" class="w-100">
+        <!-- Options de tri -->
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="optionsRadios" id="triParNom" value="NomCat" onchange="submitForm()">
+            <label class="form-check-label" for="triParNom">
+                Trier par Nom
+            </label>
+        </div>
+        <!-- Champ de recherche -->
+        <input type="text" name="Search" class="form-control flex-grow-1" placeholder="Rechercher...">
+        <!-- Bouton de recherche -->
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form>
+
+
+    <!-- Tableau des catégories -->
+    <table class="table" id="myTable">
+        <thead>
+            <h1>Categories</h1>
+            <tr style="background-color: #f2f2f2;">
+                <!-- En-têtes des colonnes -->
+                <th>IdCat</th>
+                <th>NomCat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for categorie in categories %}
+            <tr>
+                <!-- Contenu des colonnes -->
+                <td>{{ categorie.idCat }}</td>
+                <td>{{ categorie.nomCat }}</td>
+                <td>
+                    <!-- Liens vers les actions -->
+                    <a href="{{ path('app_admin_cat_show', {'idCat': categorie.idCat}) }}" class="btn btn-primary">Show</a>
+                    <a href="{{ path('app_admin_cat_edit', {'idCat': categorie.idCat}) }}" class="btn btn-primary">Edit</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <!-- Message si aucun enregistrement trouvé -->
+                <td colspan="3" style="text-align: center;">No records found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <br>
+    <br>
+
+    <!-- Bouton pour créer une nouvelle catégorie -->
+    <a href="{{ path('app_admin_cat_new') }}" class="btn btn-primary">Create New</a>
+</div>
+
+<script>
+    function submitForm() {
+        document.getElementById("searchForm").submit();
+    }
+</script>
+
+{% endblock %}

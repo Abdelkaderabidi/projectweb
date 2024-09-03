@@ -1,0 +1,202 @@
+{% extends 'back.html.twig' %}
+
+{% block body %}
+<style>
+    .center-block {
+        text-align: center;
+    }
+    
+    .table th:nth-child(4), .table td:nth-child(4) {
+        width: 20% !important; /* Adjust the width of the Description column */
+    }
+    
+    .table th:last-child, .table td:last-child {
+        width: 25% !important; /* Set width of the last column (Actions) */
+    }
+    
+    /* Custom button color */
+    .btn-primary {
+        background-color: #778A17 !important;
+        border-color: #778A17 !important;
+    }
+    
+    .btn-primary:hover {
+        background-color: #6c7914 !important;
+        border-color: #6c7914 !important;
+    }
+
+    /* Style pour le formulaire de tri */
+    #searchForm {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px; /* Ajoute une marge en bas pour l'espace */
+    }
+
+    .form-check-label {
+        margin-right: 10px; /* Ajoute une marge entre le bouton radio et son libellé */
+    }
+</style>
+   
+<div class="center-block">
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <!-- Formulaire de recherche -->
+    <form id="searchForm" method="POST" action="{{ path('app_admin_prod_index') }}" class="w-100">
+        <!-- Options de tri -->
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="optionsRadios" id="triParNom" value="NomProd" onchange="submitForm()">
+            <label class="form-check-label" for="triParNom">
+                Trier par Nom
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="optionsRadios" id="triParPrix" value="Prix" onchange="submitForm()">
+            <label class="form-check-label" for="triParPrix">
+                Trier par Prix
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="optionsRadios" id="triParQuantite" value="Quantite" onchange="submitForm()">
+            <label class="form-check-label" for="triParQuantite">
+                Trier par Quantité
+            </label>
+        </div>
+        <!-- Champs de recherche -->
+        <input type="text" id="searchInput" name="Search" class="form-control flex-grow-1" placeholder="Rechercher...">
+        <!-- Bouton de recherche -->
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+        <!-- Bouton de recherche vocale -->
+        <button type="button" class="btn btn-secondary" onclick="startVoiceSearch()">🎤 Voice Search</button>
+    </form>
+
+    <!-- Tableau des produits -->
+    <table class="table" id="myTable">
+        <thead>
+            <h1>Produits</h1>
+            <tr style="background-color: #f2f2f2;">
+                <!-- En-têtes des colonnes -->
+                <th>Ref</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Image</th>
+                <th>Promotion</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Prix promo</th>
+                <th>Categories</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produit in produits %}
+            <tr>
+                <!-- Contenu des colonnes -->
+                <td>{{ produit.refProd }}</td>
+                <td>{{ produit.nomProd }}</td>
+                <td>{{ produit.quantite }}</td>
+                <td>{{ produit.description }}</td>
+                <td>{{ produit.prix }} DT</td>
+                <td><img src="{{ asset('images/' ~ produit.image)}}" style="max-width: 110px; max-height: 80px;" alt=""></td>
+                <td>{{ produit.enPromo ? 'Yes' : 'No' }}</td>
+                <td>{{ produit.dateDebutPromo ? produit.dateDebutPromo|date('Y-m-d') : 'N/A' }}</td>
+                <td>{{ produit.dateFinPromo ? produit.dateFinPromo|date('Y-m-d') : 'N/A' }}</td>
+                <td>{{ produit.prixApresPromo }} %</td>
+                <td>{{ produit.Categories.getNomCat() }}</td>
+                <td>
+                    <!-- Liens vers les actions -->
+                    <a href="{{ path('app_admin_prod_show', {'refProd': produit.refProd}) }}" class="btn btn-primary">Show</a>
+                    <a href="{{ path('app_admin_prod_edit', {'refProd': produit.refProd}) }}" class="btn btn-primary">Edit</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <!-- Message si aucun enregistrement trouvé -->
+                <td colspan="12" style="text-align: center;">No records found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Ref</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Image</th>
+                <th>Promotion</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Prix promo</th>
+                <th>Categories</th>
+                <th>Actions</th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- Include JS libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable({
+                "language": {
+                    "lengthMenu": "Afficher MENU éléments par page",
+                    "zeroRecords": "Aucun enregistrement trouvé",
+                    "info": "Page PAGE sur PAGES",
+                    "infoEmpty": "Aucun enregistrement disponible",
+                    "infoFiltered": "(filtré sur MAX total des enregistrements)",
+                    "search": "Recherche:",
+                }
+            });
+
+            function search() {
+                const searchInput = document.getElementById('searchInput');
+                const query = searchInput.value;
+                $('#myTable').DataTable().search(query).draw();
+            }
+
+            function startVoiceSearch() {
+                const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+                recognition.lang = 'fr-FR';
+
+                recognition.onresult = function(event) {
+                    const searchInput = document.getElementById('searchInput');
+                    let searchQuery = event.results[0][0].transcript;
+
+                    searchQuery = searchQuery.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+
+                    searchInput.value = searchQuery;
+                    search();
+                }
+
+                recognition.start();
+            }
+            
+            window.startVoiceSearch = startVoiceSearch;
+        });
+
+        function submitForm() {
+            document.getElementById("searchForm").submit();
+        }
+    </script>
+    
+    <br>
+    <br>
+
+    <!-- Buttons -->
+    <a href="{{ path('app_admin_prod_new') }}" class="btn btn-primary">Create New</a>
+    <a href="{{ path('app_admin_stats') }}" class="btn btn-secondary">View Stats</a>
+</div>
+
+{% endblock %}

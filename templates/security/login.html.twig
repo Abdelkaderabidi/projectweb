@@ -1,0 +1,82 @@
+{% extends 'login.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <br>
+    <br>
+    <br>
+
+    <style>
+        /* Ajoutez vos styles CSS ici */
+        .login-container {
+            margin: auto;
+            width: 50%;
+            max-width: 400px; /* Limiter la largeur maximale */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .form-label {
+            color: #778A17; /* Changer la couleur du texte */
+            font-size: 16px; /* Taille de police */
+            font-weight: bold; /* Texte en gras */
+            display: block; /* Assurer un affichage en bloc */
+            margin-bottom: 5px; /* Marge inférieure */
+            text-align: left; /* Alignement à gauche */
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            text-align: center; /* Centrer les éléments du formulaire */
+        }
+
+        .form-control {
+            margin-bottom: 10px; /* Augmenter l'espace entre les champs */
+            font-size: 14px; /* Taille de police plus petite */
+            text-align: center; /* Centrer le texte */
+        }
+
+        .btn-primary {
+            width: 100%;
+        }
+    </style>
+
+    <div class="login-container">
+        <form method="post">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            <h1 class="fashion_taital text-center" style="padding-top: 10px; padding-bottom: 10px;">
+                    <span style="color: #164D73;">Login</span>
+                </h1>
+            <div class="form-group">
+                <label for="inputEmail" class="form-label">Email</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword" class="form-label">Password</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+              <button class="btn btn-warning" style="background-color: #778A17;" type="submit">Sign in</button>
+
+        </form>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+{% endblock %}

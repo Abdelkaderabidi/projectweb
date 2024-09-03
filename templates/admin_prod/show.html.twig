@@ -1,0 +1,89 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Product{% endblock %}
+
+{% block body %}
+    <br>
+    <br>
+    <br>
+    <h1 style="text-align: center;">Product</h1>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-sm-6">
+                <div class="box_main">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="{{ asset('images/' ~ produit.image) }}" alt="{{ produit.nomProd }}">
+                        <div class="card-body text-center">
+                            <h5 class="card-title mb-3" style="font-size: 24px; color: #007bff;">{{ produit.nomProd }}</h5>
+                            <p class="card-text"><strong>Prix:</strong> {{ produit.prix }} DT</p>
+                            <p class="card-text"><strong>Quantité:</strong> {{ produit.quantite }}</p>
+                            <p class="card-text"><strong>Description:</strong> {{ produit.description }}</p>
+                            <p class="card-text"><strong>Catégorie:</strong> {{ produit.categories.nomCat }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="text-center mt-3">
+                                <a href="{{ path('app_admin_prod_index') }}" class="btn btn-primary" style="background-color: #778A17;">Back to List</a>
+                                {{ include('admin_prod/_delete_form.html.twig') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Translate Element -->
+    <div id="google_translate_element"></div>
+
+    <!-- Control Buttons -->
+    <div class="container text-center mt-4">
+        <button onclick="speakSelectedText()" class="btn btn-danger" style="background-color:green;"><i class="fas fa-volume-up"></i> Lire en vocal</button>
+        <button onclick="stopSpeaking()" class="btn btn-danger" style="background-color:red;"><i class="fas fa-stop"></i> Arrêter</button>
+        <button onclick="rechercherGoogle()" class="btn btn-primary">Rechercher sur Google</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+
+    <script>
+        // Initialize Google Translate
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en'
+            }, 'google_translate_element');
+        }
+
+        // Load Google Translate script
+        (function() {
+            var gtConstEvalStartTime = new Date();
+            var d = document;
+            var s = d.createElement('script');
+            s.type = 'text/javascript';
+            s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+            var gcse = d.getElementsByTagName('script')[0];
+            gcse.parentNode.insertBefore(s, gcse);
+        })();
+
+        // Function to speak the selected text
+        function speakSelectedText() {
+            const utterance = new SpeechSynthesisUtterance(window.getSelection().toString());
+            speechSynthesis.speak(utterance);
+        }
+
+        // Function to stop speaking
+        function stopSpeaking() {
+            speechSynthesis.cancel();
+        }
+
+        // Function to search on Google
+        function rechercherGoogle() {
+            const searchQuery = window.getSelection().toString();
+            if (searchQuery) {
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`, '_blank');
+            } else {
+                alert('Please select text to search on Google.');
+            }
+        }
+    </script>
+{% endblock %}
